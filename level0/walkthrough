@@ -1,0 +1,6 @@
+gdb ./level0
+
+disas main
+   0x08048ed9 <+25>:    cmp    $0x1a7,%eax
+
+0x1a7 = 423
